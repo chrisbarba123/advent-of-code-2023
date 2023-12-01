@@ -1,5 +1,4 @@
 import Parser from '../utils/dayParser';
-import { Numbers } from '../utils/numberEnum';
 
 const numObjString: {
   [key: string]: string;
@@ -15,28 +14,60 @@ const numObjString: {
   nine: '9',
 };
 
+const numObjStringReverse: {
+  [key: string]: string;
+} = {
+  eno: '1',
+  owt: '2',
+  eerht: '3',
+  ruof: '4',
+  evif: '5',
+  xis: '6',
+  neves: '7',
+  thgie: '8',
+  enin: '9',
+};
+
 const displaySolution = async (): Promise<void> => {
   const data: string = await Parser(1);
   const dataSplit: string[] = data.split('\n');
-  const regex: RegExp = /one|two|three|four|five|six|seven|eight|nine|[0-9]/g;
-  const output = dataSplit
-    .map((item) => item.match(regex) as (string | null)[])
+  const dataSplitReverse: string[] = dataSplit.map((item) =>
+    item.split('').reverse().join('')
+  );
+  const regex: RegExp = /one|two|three|four|five|six|seven|eight|nine|\d/g;
+  const regexReverse: RegExp =
+    /eno|owt|eerht|ruof|evif|xis|neves|thgie|enin|\d/g;
+
+  let first = regexFilter(regex, dataSplit, numObjString);
+  let last = regexFilter(regexReverse, dataSplitReverse, numObjStringReverse);
+  let concatArray = [];
+  for (let i: number = 0; i < first.length; i++) {
+    let num = first[i] + last[i];
+    concatArray.push(num);
+  }
+  console.log(
+    concatArray.reduce((a, b) => (parseInt(a) + parseInt(b)).toString())
+  );
+};
+
+const regexFilter = (
+  regex: RegExp,
+  data: string[],
+  numObj: { [key: string]: string }
+) => {
+  const response = data
+    .map((item) => item.match(regex))
     .filter((item) => item !== null)
-    .map(mapperData)
-    .reduce((a, b) => parseInt(a! + parseInt(b!)).toString());
-  console.log(output);
+    .map((item) => toIntegerString(item![0], numObj));
+  return response;
 };
 
-const mapperData = (item: (string | null)[]): string | undefined => {
-  const length = item.length;
-  const elementOne = item[0];
-  const elementTwo = item[length - 1];
-  return toIntegerString(elementOne).concat(toIntegerString(elementTwo));
-};
-
-const toIntegerString = (intStr: string | null): string => {
-  if (intStr === 'string' && Object.keys(numObjString).includes(intStr)) {
-    return numObjString[intStr];
+const toIntegerString = (
+  intStr: string,
+  numObj: { [key: string]: string }
+): string => {
+  if (Object.keys(numObj).includes(intStr!)) {
+    return numObj[intStr!];
   }
   return intStr as string;
 };
