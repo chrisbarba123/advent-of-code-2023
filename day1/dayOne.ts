@@ -2,15 +2,13 @@ import Parser from '../utils/dayParser';
 
 const displaySolution = async (): Promise<void> => {
   const data: string = await Parser(1);
-  const dataArray: string[] = data.split('\n');
-  console.dir(
-    dataArray
-      .map((item: string) => item.match(/[0-9]/g) as (string | null)[])
-      .filter((x) => x !== null)
-      .map(mapperData)
-      .reduce((a, b) => (parseInt(a!) + parseInt(b!)).toString()),
-    { maxArrayLength: null }
-  );
+  const output: string | undefined = data
+    .split('\n')
+    .map((item: string) => item.match(/[0-9]/g) as (string | null)[])
+    .filter((x) => x !== null)
+    .map(mapperData)
+    .reduce((a, b) => (parseInt(a!) + parseInt(b!)).toString());
+  console.log(output);
 };
 
 const mapperData = (item: (string | null)[]): string | undefined => {
