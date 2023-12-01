@@ -1,4 +1,4 @@
-import Parser from '../src/dayParser';
+import Parser from '../utils/dayParser';
 
 const displaySolution = async (): Promise<void> => {
   const data: string = await Parser(1);
