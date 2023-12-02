@@ -1,35 +1,35 @@
 import Parser from '../utils/dayParser';
 
-type genericObj<T> = {
+export type GenericObj<T> = {
   game: T;
   blue: T;
   green: T;
   red: T;
 };
 
-const regexArray: genericObj<RegExp> = {
+export const regexArray: GenericObj<RegExp> = {
   game: /(?<=^Game\s)\d+/g,
   blue: /(\d+?)(?=\sblue)/g,
   red: /(\d+?)(?=\sred)/g,
   green: /(\d+?)(?=\sgreen)/g,
 };
 
-const cubeAmountArray: number[] = [12, 13, 14];
+export const cubeAmountArray: number[] = [12, 13, 14];
 
 const displaySolution = async (): Promise<void> => {
   const data: string = await Parser(2);
   const dataLine: number = data
     .split('\n')
     .filter((line: string) => line !== '')
-    .map(lineDataChange)
+    .map(LineDataChange)
     .filter(filterForValid)
-    .map((object: genericObj<number>) => object.game)
+    .map((object: GenericObj<number>) => object.game)
     .reduce((a, b) => a + b);
   console.log(dataLine);
 };
 
-const lineDataChange = (line: string): genericObj<number> => {
-  let dataObj: genericObj<number> = {
+export const LineDataChange = (line: string): GenericObj<number> => {
+  let dataObj: GenericObj<number> = {
     game: 0,
     red: 0,
     green: 0,
@@ -52,7 +52,7 @@ const findMaxCubes = (cubeArray: string[]): number => {
     .reduce((a: number, b: number) => Math.max(a, b));
 };
 
-const filterForValid = (gameObj: genericObj<number>): boolean => {
+const filterForValid = (gameObj: GenericObj<number>): boolean => {
   return gameObj.blue <= cubeAmountArray[2] &&
     gameObj.red <= cubeAmountArray[0] &&
     gameObj.green <= cubeAmountArray[1]
