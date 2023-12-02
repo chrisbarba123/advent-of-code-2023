@@ -22,9 +22,8 @@ const displaySolution = async (): Promise<void> => {
     .split('\n')
     .filter((line: string) => line !== '')
     .map(lineDataChange)
-    .filter(filterForValid)
-    .map((object: genericObj<number>) => object.game)
-    .reduce((a, b) => a + b);
+    .map(findPowerOfGames)
+    .reduce((a: number, b: number) => a + b);
   console.log(dataLine);
 };
 
@@ -52,12 +51,8 @@ const findMaxCubes = (cubeArray: string[]): number => {
     .reduce((a: number, b: number) => Math.max(a, b));
 };
 
-const filterForValid = (gameObj: genericObj<number>): boolean => {
-  return gameObj.blue <= cubeAmountArray[2] &&
-    gameObj.red <= cubeAmountArray[0] &&
-    gameObj.green <= cubeAmountArray[1]
-    ? true
-    : false;
+const findPowerOfGames = (gameObj: genericObj<number>): number => {
+  return gameObj.blue * gameObj.green * gameObj.red;
 };
 
 displaySolution();
