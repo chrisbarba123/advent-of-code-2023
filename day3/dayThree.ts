@@ -57,7 +57,7 @@ const displaySolution = async (): Promise<void> => {
     }
   }
 
-  console.dir(fullSum, { maxArrayLength: null });
+  console.log(fullSum);
 };
 
 displaySolution();
