@@ -7,7 +7,6 @@ const displaySolution = async (): Promise<void> => {
   const dataLine: string[] = data
     .split('\n')
     .filter((line: string) => line !== '');
-  const regexInline: RegExp = /(?<=[^.0-9])\d{1,3}|\d{1,3}(?=[^.0-9])/;
   const regexAllNumbers: RegExp = /\d{1,3}/g;
   const symbolRegex: RegExp = /[^.0-9]/;
   let fullSum: number = 0;
