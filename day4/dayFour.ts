@@ -21,6 +21,7 @@ const displaySolution = async (): Promise<void> => {
     const response = drawNumbers[i].filter((draw: number) =>
       winningNumbers[i].includes(draw)
     );
+    console.log(response.length);
     sum += calculatePoints(response);
   }
 
