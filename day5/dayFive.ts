@@ -1,21 +1,23 @@
 import Parser from '../utils/dayParser';
 
-const mapTables: string[][][] = [];
+const mapTables: number[][][] = [];
 
 const displaySolution = async (): Promise<void> => {
   const data: string = await Parser(5);
-  // console.log(data);
-
-  const seeds: string[] = data.match(/(?<=seeds:\s)[0-9 ]*/)![0].split(' ');
+  const seeds: number[] = data
+    .match(/(?<=seeds:\s)[0-9 ]*/)![0]
+    .split(' ')
+    .map((number: string) => parseInt(number));
 
   for (let i: number = 0; i < 7; i++) {
     mapTables.push(createMapTables(i, data));
   }
-  console.log(data.search(/(?<=humidity-to-location map):/));
-  console.dir(mapTables[6], { maxArrayLength: null });
+
+  const location = seeds.map((seed: number): number => findMap(seed));
+  console.log(Math.min(...location), 'ANSWER');
 };
 
-const createMapTables = (idx: number, data: string): string[][] => {
+const createMapTables = (idx: number, data: string): number[][] => {
   const mapRegex: RegExp[][] = [
     [/(?<=seed-to-soil map):/, /soil-to-fertilizer/],
     [/(?<=soil-to-fertilizer map):/, /fertilizer-to-water/],
@@ -33,7 +35,25 @@ const createMapTables = (idx: number, data: string): string[][] => {
     .substring(data.search(mapRegex[idx][0]) + 2, endOfString)
     .split('\n')
     .filter((line: string) => line !== '')
-    .map((line: string) => line.split(' '));
+    .map((line: string) =>
+      line.split(' ').map((number: string) => parseInt(number))
+    );
+};
+
+const findMap = (source: number, idx: number = 0): number => {
+  const nextIdx = idx + 1;
+  if (idx === 7) {
+    return source;
+  }
+  let newMap: number = source;
+  mapTables[idx].forEach((line: number[]) => {
+    const sourceRange = [line[1], line[1] + line[2]];
+    if (source >= sourceRange[0] && source <= sourceRange[1]) {
+      const difference: number = source - sourceRange[0];
+      newMap = line[0] + difference;
+    }
+  });
+  return findMap(newMap, nextIdx);
 };
 
 displaySolution();
