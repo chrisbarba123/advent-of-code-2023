@@ -20,30 +20,43 @@ const displaySolution = async (): Promise<void> => {
     mapTables.push(createMapTables(i, data));
   }
   mapTables = mapTables.reverse();
-  const locations: any = Array.apply(null, Array(100000)).map(function (x, i) {
-    return i;
-  });
-  const seedEnd = locations
-    .map((location: number): number => {
-      return findMap(location);
-    })
-    .filter((locationSolution: number) => {
-      let inRange: boolean = false;
-      seedRanges.forEach((seedRange: number[]) => {
-        if (
-          locationSolution >= seedRange[0] &&
-          locationSolution <= seedRange[1]
-        ) {
-          inRange = true;
-        }
-      });
-      return inRange;
+
+  let counter = 0;
+  let answerFound: number | null = null;
+  while (typeof answerFound !== 'number') {
+    const seed = findMap(counter);
+    seedRanges.forEach((seedRange: number[]) => {
+      if (seed >= seedRange[0] && seed <= seedRange[1]) {
+        answerFound = counter;
+      }
     });
+    // console.log(answerFound, counter, seed);
+    counter++;
+  }
+  // const locations: any = Array.apply(null, Array(100000)).map(function (x, i) {
+  //   return i;
+  // });
+  // const seedEnd = locations
+  //   .map((location: number): number => {
+  //     return findMap(location);
+  //   })
+  //   .filter((locationSolution: number) => {
+  //     let inRange: boolean = false;
+  //     seedRanges.forEach((seedRange: number[]) => {
+  //       if (
+  //         locationSolution >= seedRange[0] &&
+  //         locationSolution <= seedRange[1]
+  //       ) {
+  //         inRange = true;
+  //       }
+  //     });
+  //     return inRange;
+  //   });
 
   //   const seedEnd = [35].map((location: number) => findMap(location));
 
   //   console.log(seedEnd);
-  console.log(Math.min(...seedEnd), 'ANSWER');
+  console.log(answerFound, 'ANSWER');
 };
 
 const createMapTables = (idx: number, data: string): number[][] => {
@@ -76,7 +89,7 @@ const findMap = (source: number, idx: number = 0): number => {
   }
   let newMap: number = source;
   mapTables[idx].forEach((line: number[]) => {
-    const sourceRange = [line[0] + 1, line[0] + line[2]];
+    const sourceRange = [line[0], line[0] + line[2] - 1];
     if (source >= sourceRange[0] && source <= sourceRange[1]) {
       const difference: number = source - sourceRange[0];
       newMap = line[1] + difference + 1;

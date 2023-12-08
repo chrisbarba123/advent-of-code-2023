@@ -22,9 +22,7 @@ const displaySolution = async (): Promise<void> => {
       j++
     ) {
       const location = findMap(j);
-      console.log(j, ' ', location);
       seedRangeMin = Math.min(location, seedRangeMin);
-      console.log(seedRangeMin);
     }
   }
   //   const location = seedRanges.map((seed: number): number => findMap(seed));
