@@ -105,7 +105,6 @@ const displaySolution = async (): Promise<void> => {
   }
 
   let sortedBids = [];
-  //   console.dir(cardGroups, { maxArrayLength: null });
   for (let group of cardGroups) {
     for (let bid of group) {
       sortedBids.push(bid);
@@ -116,7 +115,6 @@ const displaySolution = async (): Promise<void> => {
     .map((bid: string[], index: number) => parseInt(bid[1]) * (index + 1))
     .reduce((a: number, b: number) => a + b);
 
-  console.dir(sortedBids, { maxArrayLength: null });
   console.log(answer);
 };
 
