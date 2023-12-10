@@ -27,7 +27,7 @@ const displaySolution = async (): Promise<void> => {
     /A$/.test(direction.address)
   );
 
-  findLCM(endWithA, instructions, structuredDirection);
+  console.log(findLCM(endWithA, instructions, structuredDirection));
 };
 
 const parseDirections = (direction: string): directions => {
@@ -36,7 +36,6 @@ const parseDirections = (direction: string): directions => {
     left: '',
     right: '',
   };
-  //   console.log(direction, direction.match(/^\w+/));
   directionObject.address = direction.match(/^\w+/)![0] as string;
   directionObject.left = direction.match(/(?<=\()\w{3}/)![0] as string;
   directionObject.right = direction.match(/\w{3}(?=\))/)![0] as string;
@@ -50,20 +49,18 @@ const sortAddress = (a: directions, b: directions) => {
 
 const primeFactors = (steps: number): number[] => {
   console.log(steps, 'in prime factors');
-  let primeFactors: number[] = [];
-  while (steps % 2 == 0) {
-    primeFactors.push(2);
-    steps = Math.floor(steps / 2);
-  }
-  for (let i = 3; i <= Math.floor(Math.sqrt(steps)); i = i + 2) {
-    while (steps % i == 0) {
-      primeFactors.push(i);
-      steps = Math.floor(steps / i);
+  const factors = [];
+  let divisor = 2;
+
+  while (steps >= 2) {
+    if (steps % divisor == 0) {
+      factors.push(divisor);
+      steps = steps / divisor;
+    } else {
+      divisor++;
     }
   }
-  if (steps > 2) primeFactors.push(steps);
-
-  return primeFactors;
+  return factors;
 };
 
 const findLCM = (
@@ -74,8 +71,20 @@ const findLCM = (
   const primes = allA.map((address: directions) =>
     primeFactors(findLocation(instructions, directions, address))
   );
-  console.log(primes);
-  return 0;
+  let uniquePrimes: number[] = [];
+  for (let prime of primes) {
+    for (let number of prime) {
+      if (!uniquePrimes.includes(number)) {
+        uniquePrimes.push(number);
+      }
+    }
+  }
+
+  console.log(uniquePrimes);
+  for (let prime of uniquePrimes) {
+    primes.find;
+  }
+  return answer;
 };
 
 const findLocation = (
