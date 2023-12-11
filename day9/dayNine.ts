@@ -31,7 +31,4 @@ const findNextPrediction = (line: number[]): number => {
   return line[line.length - 1] + findNextPrediction(difference);
 };
 
-// const initialNext = (allDifference: number[]): number => {
-//   return 0;
-// };
 displaySolution();
